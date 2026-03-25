@@ -35,7 +35,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Aranya Basu"
-            className="h-20 w-20 md:h-24 md:w-24 object-contain scale-[1.5] transform-gpu"
+            className="h-12 w-12 md:h-14 md:w-14 object-contain scale-125 origin-left"
           />
         </a>
 
