@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
+import { Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
 
 const projects = [
   {
