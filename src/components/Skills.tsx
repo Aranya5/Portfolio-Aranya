@@ -150,11 +150,11 @@ export default function Skills() {
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-5 text-white group-hover:text-cyan-300 transition-colors">
                   {category.title}
                 </h3>
-                <div className="grid grid-cols-2 gap-3 w-full px-2">
+                <div className="flex flex-wrap justify-center gap-3 w-full px-2">
                   {category.skills.map((skill, sIdx) => (
                     <span 
                       key={sIdx}
-                      className="px-2 py-1.5 text-xs font-mono rounded bg-slate-800/80 text-cyan-100 border border-cyan-500/20 shadow-sm flex items-center justify-center text-center"
+                      className="w-[calc(50%-6px)] px-2 py-1.5 text-xs font-mono rounded bg-slate-800/80 text-cyan-100 border border-cyan-500/20 shadow-sm flex items-center justify-center text-center"
                     >
                       {skill}
                     </span>
