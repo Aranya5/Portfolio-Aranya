@@ -138,21 +138,23 @@ export default function Skills() {
               key={idx}
               variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="glass p-6 md:p-8 rounded-2xl border-t border-white/10 relative overflow-hidden group min-w-[280px] md:min-w-[340px] snap-center shrink-0 flex flex-col h-full hover:shadow-2xl hover:shadow-cyan-500/10 transition-all cursor-grab active:cursor-grabbing"
+              className="glass p-6 md:p-8 rounded-2xl border-t border-white/10 relative overflow-hidden group min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] aspect-square snap-center shrink-0 flex flex-col justify-center items-center h-full hover:shadow-2xl hover:shadow-cyan-500/10 transition-all cursor-grab active:cursor-grabbing"
             >
               {/* Subtle hover glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
-              <div className="relative z-10">
-                {category.icon}
+              <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center">
+                <div className="flex items-center justify-center text-center transform transition-transform group-hover:scale-110 duration-300">
+                  {category.icon}
+                </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-5 text-white group-hover:text-cyan-300 transition-colors">
                   {category.title}
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-3 w-full px-2">
                   {category.skills.map((skill, sIdx) => (
                     <span 
                       key={sIdx}
-                      className="px-2 py-1 text-xs font-mono rounded bg-slate-800/80 text-cyan-100 border border-cyan-500/20 shadow-sm"
+                      className="px-2 py-1.5 text-xs font-mono rounded bg-slate-800/80 text-cyan-100 border border-cyan-500/20 shadow-sm flex items-center justify-center text-center"
                     >
                       {skill}
                     </span>
