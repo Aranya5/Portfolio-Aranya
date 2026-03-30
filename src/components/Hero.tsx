@@ -54,7 +54,7 @@ export default function Hero() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 rounded-full glass glass-hover text-white font-medium flex items-center space-x-2"
             >
-              <span>View Resume</span>
+              <span>View My Resume</span>
               <Download size={18} />
             </motion.a>
           </div>
