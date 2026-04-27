@@ -32,7 +32,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-lg text-slate-400 font-sans max-w-lg leading-relaxed">
-            I am a <strong className="text-white">Full-Stack Developer</strong> and CS undergraduate, seamlessly blending scalable system architecture with stunning, interactive UI.
+            I am a <strong className="text-white">Full-Stack Engineer</strong> and CS undergraduate, specializing in scalable backend architecture, applied AI/ML systems, and interactive interfaces.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">

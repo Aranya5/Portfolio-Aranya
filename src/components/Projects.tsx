@@ -4,11 +4,14 @@ import { Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid
 
 const projects = [
   {
-    title: 'Strawhats',
+    title: 'Straw-hats',
     period: 'Aug 2024 - Oct 2024',
     subtitle: 'AI-Driven Crop Disease Management System',
-    description: 'Engineered a deep learning CNN trained on 13,000+ crop images for accurate disease detection and management.',
-    stack: ['Python', 'TensorFlow', 'CNN', 'Flask', 'FastAPI'],
+    description: [
+      'Engineered a TensorFlow-based CNN trained on 13,000+ images using bagging ensemble techniques, achieving 86%+ test accuracy for multi-class crop disease prediction.',
+      'Architected a scalable Flask/FastAPI backend to expose RESTful prediction endpoints, delivering real-time diagnostic results to a responsive frontend with <200ms inference latency.'
+    ],
+    stack: ['Python', 'TensorFlow', 'CNN', 'Flask', 'FastAPI', 'Machine Learning'],
     icon: <Code2 className="text-emerald-400" size={24} />,
     githubUrl: 'https://github.com/Aranya5/Strawhats'
   },
@@ -16,7 +19,11 @@ const projects = [
     title: 'AAB-O-HAWA',
     period: 'Aug 2025 - Sep 2025',
     subtitle: 'Crowdsourced Civic Data Platform',
-    description: 'Architected a role-based verification ecosystem to crowdsource civic intelligence. Integrated real-time geographical analytics.',
+    description: [
+      'Built a full-stack civic crowdsourcing platform for real-time issue reporting, supporting 500+ geotagged submissions with Google Maps and Leaflet heatmap visualization.',
+      'Engineered role-based JWT authentication and live Socket.io collaboration, integrating Cloudinary CDN for secure image storage to reduce media upload latency by ~35%.',
+      'Implemented Express.js REST APIs and MongoDB aggregation pipelines for hotspot detection, driving a responsive React/TypeScript frontend deployed on Render.'
+    ],
     stack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Socket.io', 'Google Maps API'],
     icon: <ShieldAlert className="text-rose-400" size={24} />,
     githubUrl: 'https://github.com/Aranya5/Un4gettable'
@@ -24,9 +31,12 @@ const projects = [
   {
     title: 'Retro Quest',
     period: 'Jan 2026 - Current',
-    subtitle: '2D Adventure Game Engine',
-    description: 'Built a game engine from scratch programming core game loops, physics, and tile-based collision detection algorithms.',
-    stack: ['Java', 'OOP', 'Data Structures', 'AWT/Swing'],
+    subtitle: '2D Adventure Game',
+    description: [
+      'Architected a custom 2D Java game engine featuring core loops, physics, and AABB collision detection, applying Entity-Component and State Machine OOP design patterns.',
+      'Optimized sprite rendering and asset management pipelines via spatial data structures, resolving cross-platform loading bottlenecks and increasing rendering efficiency by over 40%.'
+    ],
+    stack: ['Java', 'OOP', 'Data Structures', 'Custom Rendering Engine'],
     icon: <Cpu className="text-amber-400" size={24} />,
     githubUrl: 'https://github.com/Aranya5/Retro-Quest'
   },
@@ -34,7 +44,10 @@ const projects = [
     title: 'ShelfMate',
     period: 'Jan 2026 - Mar 2026',
     subtitle: 'Edge AI Retail Analytics Platform',
-    description: 'Full-stack AI platform enabling real-time retail analytics, automating stockout detection, and analyzing shopper intent for store managers. Engineered a computer vision pipeline with OpenCV and MediaPipe, integrating Firebase for real-time task coordination and predictive gap velocity algorithms.',
+    description: [
+      'Full-stack AI platform enabling real-time retail analytics, automating stockout detection, and analyzing shopper intent for store managers.',
+      'Engineered a computer vision pipeline with OpenCV and MediaPipe, integrating Firebase for real-time task coordination and predictive gap velocity algorithms.'
+    ],
     stack: ['Python', 'OpenCV', 'MediaPipe', 'Node.js', 'SQL', 'Firebase'],
     icon: <ScanEye className="text-violet-400" size={24} />,
     githubUrl: 'https://github.com/Aranya5/ShelfMate'
@@ -169,10 +182,12 @@ export default function Projects() {
                 </div>
 
                 <div className="flex-grow mb-8">
-                  <p className={`text-slate-400 ${!showAll ? 'line-clamp-4' : ''}`}>
-                    {project.description}
-                  </p>
-                  {!showAll && project.description.length > 150 && (
+                  <ul className={`text-slate-400 list-disc ml-5 space-y-1 ${!showAll ? 'line-clamp-4' : ''}`}>
+                    {project.description.map((bullet, i) => (
+                      <li key={i}>{bullet}</li>
+                    ))}
+                  </ul>
+                  {!showAll && project.description.join(' ').length > 150 && (
                     <button 
                       onClick={(e) => { e.stopPropagation(); setShowAll(true); }}
                       className="text-cyan-400 text-sm font-mono mt-2 flex items-center hover:underline"

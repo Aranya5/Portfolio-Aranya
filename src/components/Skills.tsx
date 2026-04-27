@@ -11,7 +11,7 @@ const skillCategories = [
   {
     title: 'Frontend',
     icon: <Layout className="text-cyan-400 mb-4" size={32} />,
-    skills: ['React.js', 'Tailwind CSS', 'Vite', 'HTML5/CSS3']
+    skills: ['React.js', 'React Native', 'Tailwind CSS', 'Vite', 'HTML5/CSS3']
   },
   {
     title: 'Backend',
@@ -26,17 +26,17 @@ const skillCategories = [
   {
     title: 'ML/AI',
     icon: <BrainCircuit className="text-pink-400 mb-4" size={32} />,
-    skills: ['TensorFlow', 'Keras', 'Scikit-learn', 'OpenCV']
+    skills: ['TensorFlow', 'Keras', 'OpenCV']
   },
   {
     title: 'Cloud/DevOps',
     icon: <Cloud className="text-sky-400 mb-4" size={32} />,
-    skills: ['AWS', 'Docker', 'Git/GitHub', 'Maven', 'Render', 'Vercel', 'Jupyter']
+    skills: ['AWS', 'Docker', 'Git/GitHub', 'Render', 'Vercel', 'Jupyter Notebooks']
   },
   {
     title: 'Core CS',
     icon: <Cpu className="text-orange-400 mb-4" size={32} />,
-    skills: ['Data Structures', 'Algorithms', 'OOPs', 'Operating Systems']
+    skills: ['DSA', 'OOP', 'Operating Systems']
   }
 ];
 

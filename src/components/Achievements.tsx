@@ -3,16 +3,16 @@ import { Trophy, Medal, Users } from 'lucide-react';
 
 const achievements = [
   {
-    title: '1st Rank Winner',
-    event: 'HackHeritage 2.0',
-    description: 'Secured 1st place with the "Strawhats" AI-Driven Crop Disease Management System.',
+    title: '1st Place',
+    event: 'Hack Heritage 2.0',
+    description: 'Won with "Strawhats," an AI-driven crop disease detection system built and deployed within the hackathon window.',
     icon: <Trophy className="text-yellow-400" size={28} />,
     color: 'from-yellow-500/20 to-amber-600/5'
   },
   {
-    title: 'Competitor / Finalist',
-    event: 'HackHeritage 3.0 & Aignite\'25',
-    description: 'Participated and fiercely competed in leading state-level hackathons presenting complex technical solutions.',
+    title: 'Hackathon Competitor',
+    event: 'Hack Heritage 3.0 & Aignite\'25',
+    description: 'Successfully built and deployed functional software prototypes under strict time constraints.',
     icon: <Medal className="text-slate-300" size={28} />,
     color: 'from-slate-400/20 to-slate-600/5'
   }
@@ -22,13 +22,13 @@ const leadership = [
   {
     title: 'Student Organizer',
     event: 'DAKSHH 2026',
-    description: 'Directed visual designing and managed overall event coordination ensuring a seamless conceptual-to-physical experience.',
+    description: 'Directed visual designing and overall event management for HITK\'s annual techno-management fest.',
     icon: <Users className="text-cyan-400" size={28} />
   },
   {
     title: 'Student Organizer',
     event: 'ICAA \'26',
-    description: 'Managed visual designing, technical operations, and hall coordination for the International Conference.',
+    description: 'Managed visual designing, technical operations, and hall coordination for the International Conference on Applied Algorithms, Heritage Institute of Technology.',
     icon: <Users className="text-indigo-400" size={28} />
   }
 ];

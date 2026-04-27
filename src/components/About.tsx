@@ -3,22 +3,22 @@ import { BookOpen, GraduationCap, Award } from 'lucide-react';
 
 const education = [
   {
-    title: 'B.Tech in Computer Science and Engineering (3rd Year)',
-    institution: 'Heritage Institute of Technology',
-    period: '2022 - 2026',
-    score: 'YGPA: 9.58 (2nd Yr) | 9.69 (1st Yr)',
+    title: 'B.Tech in Computer Science and Engineering',
+    institution: 'Heritage Institute of Technology, Kolkata',
+    period: 'Expected June 2027',
+    score: 'Current CGPA: 9.64',
     icon: <GraduationCap size={24} className="text-indigo-400" />
   },
   {
-    title: 'Higher Secondary (WBCHSE)',
-    institution: 'Purba Barasat Adarsha Bidyapith',
+    title: 'Higher Secondary (Class XII) - WBCHSE',
+    institution: 'Purba Barasat Adarsha Bidyapith, Barasat',
     period: '2022',
     score: 'Score: 94.60%',
     icon: <BookOpen size={24} className="text-cyan-400" />
   },
   {
-    title: 'Madhyamik (WBBSE)',
-    institution: 'Purba Barasat Adarsha Bidyapith',
+    title: 'Madhyamik (Class X) - WBBSE',
+    institution: 'Purba Barasat Adarsha Bidyapith, Barasat',
     period: '2020',
     score: 'Score: 93.86%',
     icon: <Award size={24} className="text-purple-400" />
@@ -50,12 +50,12 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-6"
           >
-            <h3 className="text-2xl font-serif text-indigo-300">The Architect</h3>
+            <h3 className="text-2xl font-serif text-indigo-300">Professional Summary</h3>
             <p className="text-slate-300 font-sans leading-relaxed text-lg">
-              I am a forward-thinking Computer Science undergraduate specializing in full-stack software development, AI-driven applications, and scalable systems.
+              B.Tech Computer Science undergraduate at Heritage Institute of Technology (graduating June 2027), specializing in full-stack engineering with the MERN stack, Python, and AI/ML systems.
             </p>
             <p className="text-slate-300 font-sans leading-relaxed text-lg">
-              I apply core Data Structures and Algorithms for immediate performance optimization, seamlessly blending robust technical architecture with high-impact UI/visual branding to rapid-prototype user-centric platforms.
+              Experienced in building RESTful APIs, CNN-based ML pipelines, and real-time collaborative systems. Actively seeking internship or research opportunities to apply skills in scalable backend development and applied machine learning.
             </p>
           </motion.div>
 
