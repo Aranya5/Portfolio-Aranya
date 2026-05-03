@@ -1,8 +1,20 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List } from 'lucide-react';
+import { Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List, Terminal } from 'lucide-react';
 
 const projects = [
+  {
+    title: 'Argus CLI',
+    period: 'Apr 2026 - Current',
+    subtitle: 'Asynchronous Voice-Activated DevOps Assistant',
+    description: [
+      'Engineered a decoupled, multi-process Rust architecture featuring a voice telemetry brain, a command execution daemon, and a 60FPS Ratatui TUI dashboard.',
+      'Developed smart network telemetry and automated workflows to detect frameworks, nuke zombie ports, and manipulate native browsers via AppleScript.'
+    ],
+    stack: ['Rust', 'Ratatui', 'CLI/Daemon', 'Voice-to-Text', 'AppleScript'],
+    icon: <Terminal className="text-cyan-400" size={24} />,
+    githubUrl: 'https://github.com/Aranya5/Argus-CLI'
+  },
   {
     title: 'Straw-hats',
     period: 'Aug 2024 - Oct 2024',
