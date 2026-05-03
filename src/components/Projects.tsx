@@ -16,31 +16,6 @@ const projects = [
     githubUrl: 'https://github.com/Aranya5/Argus-CLI'
   },
   {
-    title: 'Straw-hats',
-    period: 'Aug 2024 - Oct 2024',
-    subtitle: 'AI-Driven Crop Disease Management System',
-    description: [
-      'Engineered a TensorFlow-based CNN trained on 13,000+ images using bagging ensemble techniques, achieving 86%+ test accuracy for multi-class crop disease prediction.',
-      'Architected a scalable Flask/FastAPI backend to expose RESTful prediction endpoints, delivering real-time diagnostic results to a responsive frontend with <200ms inference latency.'
-    ],
-    stack: ['Python', 'TensorFlow', 'CNN', 'Flask', 'FastAPI', 'Machine Learning'],
-    icon: <Code2 className="text-emerald-400" size={24} />,
-    githubUrl: 'https://github.com/Aranya5/Strawhats'
-  },
-  {
-    title: 'AAB-O-HAWA',
-    period: 'Aug 2025 - Sep 2025',
-    subtitle: 'Crowdsourced Civic Data Platform',
-    description: [
-      'Built a full-stack civic crowdsourcing platform for real-time issue reporting, supporting 500+ geotagged submissions with Google Maps and Leaflet heatmap visualization.',
-      'Engineered role-based JWT authentication and live Socket.io collaboration, integrating Cloudinary CDN for secure image storage to reduce media upload latency by ~35%.',
-      'Implemented Express.js REST APIs and MongoDB aggregation pipelines for hotspot detection, driving a responsive React/TypeScript frontend deployed on Render.'
-    ],
-    stack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Socket.io', 'Google Maps API'],
-    icon: <ShieldAlert className="text-rose-400" size={24} />,
-    githubUrl: 'https://github.com/Aranya5/Un4gettable'
-  },
-  {
     title: 'Retro Quest',
     period: 'Jan 2026 - Current',
     subtitle: '2D Adventure Game',
@@ -63,6 +38,31 @@ const projects = [
     stack: ['Python', 'OpenCV', 'MediaPipe', 'Node.js', 'SQL', 'Firebase'],
     icon: <ScanEye className="text-violet-400" size={24} />,
     githubUrl: 'https://github.com/Aranya5/ShelfMate'
+  },
+  {
+    title: 'AAB-O-HAWA',
+    period: 'Aug 2025 - Sep 2025',
+    subtitle: 'Crowdsourced Civic Data Platform',
+    description: [
+      'Built a full-stack civic crowdsourcing platform for real-time issue reporting, supporting 500+ geotagged submissions with Google Maps and Leaflet heatmap visualization.',
+      'Engineered role-based JWT authentication and live Socket.io collaboration, integrating Cloudinary CDN for secure image storage to reduce media upload latency by ~35%.',
+      'Implemented Express.js REST APIs and MongoDB aggregation pipelines for hotspot detection, driving a responsive React/TypeScript frontend deployed on Render.'
+    ],
+    stack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Socket.io', 'Google Maps API'],
+    icon: <ShieldAlert className="text-rose-400" size={24} />,
+    githubUrl: 'https://github.com/Aranya5/Un4gettable'
+  },
+  {
+    title: 'Straw-hats',
+    period: 'Aug 2024 - Oct 2024',
+    subtitle: 'AI-Driven Crop Disease Management System',
+    description: [
+      'Engineered a TensorFlow-based CNN trained on 13,000+ images using bagging ensemble techniques, achieving 86%+ test accuracy for multi-class crop disease prediction.',
+      'Architected a scalable Flask/FastAPI backend to expose RESTful prediction endpoints, delivering real-time diagnostic results to a responsive frontend with <200ms inference latency.'
+    ],
+    stack: ['Python', 'TensorFlow', 'CNN', 'Flask', 'FastAPI', 'Machine Learning'],
+    icon: <Code2 className="text-emerald-400" size={24} />,
+    githubUrl: 'https://github.com/Aranya5/Strawhats'
   }
 ];
 
