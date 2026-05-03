@@ -57,6 +57,25 @@ export default function About() {
             <p className="text-slate-300 font-sans leading-relaxed text-lg">
               Experienced in building RESTful APIs, CNN-based ML pipelines, and real-time collaborative systems. Actively seeking internship or research opportunities to apply skills in scalable backend development and applied machine learning.
             </p>
+
+            {/* Certifications */}
+            <div className="pt-8 mt-6 border-t border-indigo-500/20">
+              <h3 className="text-2xl font-serif text-indigo-300 mb-6">Certifications</h3>
+              <div className="flex">
+                <a 
+                  href="https://www.credly.com/badges/70d8f1cd-e520-46f8-8839-b7774b31cbd2/public_url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-56 transition-transform hover:scale-105 hover:drop-shadow-[0_0_15px_rgba(79,70,229,0.5)]"
+                >
+                  <img 
+                    src="https://images.credly.com/images/e3541a0c-dd4a-4820-8052-5001006efc85/linkedin_thumb_blob" 
+                    alt="AWS Certified Cloud Practitioner" 
+                    className="w-full h-auto object-contain drop-shadow-lg"
+                  />
+                </a>
+              </div>
+            </div>
           </motion.div>
 
           {/* Education Timeline */}
