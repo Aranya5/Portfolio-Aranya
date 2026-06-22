@@ -63,26 +63,52 @@ const itemVariants = {
 };
 
 export default function Skills() {
+  const tripledSkills = [
+    ...skillCategories.map((c, i) => ({ ...c, id: `copy0-${i}` })),
+    ...skillCategories.map((c, i) => ({ ...c, id: `copy1-${i}` })),
+    ...skillCategories.map((c, i) => ({ ...c, id: `copy2-${i}` }))
+  ];
+
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [canScrollLeft] = useState(true);
+  const [canScrollRight] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
 
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 10);
-    }
+  const getCopyWidth = () => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer || scrollContainer.children.length < skillCategories.length * 3) return 0;
+    
+    const N = skillCategories.length;
+    const firstChildOfSecondCopy = scrollContainer.children[N] as HTMLElement;
+    if (!firstChildOfSecondCopy) return 0;
+    
+    return firstChildOfSecondCopy.getBoundingClientRect().left - scrollContainer.getBoundingClientRect().left + scrollContainer.scrollLeft;
   };
 
+  // Center the scroll position in the middle copy and keep it centered on resize
   useEffect(() => {
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
+    const handleResize = () => {
+      const scrollContainer = scrollRef.current;
+      if (scrollContainer) {
+        const copyWidth = getCopyWidth();
+        if (copyWidth > 0) {
+          const currentOffset = scrollContainer.scrollLeft % copyWidth;
+          scrollContainer.scrollLeft = copyWidth + currentOffset;
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Execute after a short delay to ensure layout has computed
+    const timer = setTimeout(handleResize, 100);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, []);
 
-  // Smooth continuous auto-scrolling loop
+  // Smooth continuous circular auto-scrolling loop
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -97,22 +123,25 @@ export default function Skills() {
       const deltaTime = (time - lastTime) / 1000;
       lastTime = time;
 
-      if (!isPaused) {
-        // Sync if the actual scroll position is different (e.g. from manual scrolling)
-        if (Math.abs(scrollContainer.scrollLeft - currentScrollLeft) > 1) {
-          currentScrollLeft = scrollContainer.scrollLeft;
+      const copyWidth = getCopyWidth();
+      if (copyWidth > 0) {
+        let actualScrollLeft = scrollContainer.scrollLeft;
+
+        // Seamless wrap-around checks
+        if (actualScrollLeft >= 2 * copyWidth) {
+          actualScrollLeft -= copyWidth;
+          scrollContainer.scrollLeft = actualScrollLeft;
+        } else if (actualScrollLeft < copyWidth) {
+          actualScrollLeft += copyWidth;
+          scrollContainer.scrollLeft = actualScrollLeft;
         }
 
-        currentScrollLeft += speed * deltaTime;
-        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-
-        if (currentScrollLeft >= maxScroll - 1) {
-          currentScrollLeft = 0;
+        if (!isPaused) {
+          currentScrollLeft = actualScrollLeft + speed * deltaTime;
+          scrollContainer.scrollLeft = currentScrollLeft;
+        } else {
+          currentScrollLeft = actualScrollLeft;
         }
-
-        scrollContainer.scrollLeft = currentScrollLeft;
-      } else {
-        currentScrollLeft = scrollContainer.scrollLeft;
       }
 
       animationId = requestAnimationFrame(step);
@@ -184,16 +213,15 @@ export default function Skills() {
 
           <motion.div 
             ref={scrollRef}
-            onScroll={checkScroll}
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             className="flex overflow-x-auto items-stretch gap-6 pb-12 pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-20 mask-fade"
           >
-          {skillCategories.map((category, idx) => (
+          {tripledSkills.map((category) => (
             <motion.div 
-              key={idx}
+              key={(category as any).id}
               variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
               onMouseEnter={() => setIsPaused(true)}
