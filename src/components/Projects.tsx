@@ -1,6 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List, Terminal } from 'lucide-react';
+import { Code2, ShieldAlert, Cpu, ScanEye, ChevronLeft, ChevronRight, Grid, List, Terminal } from 'lucide-react';
+
+const GithubIcon = ({ size = 20, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5 0-1.4-.5-2.5-1.5-3.5.1-.3.6-1.7-.1-3.5 0 0-1.1-.4-3.5 1.2-1-.3-2.1-.4-3.1-.4-1 0-2.1.1-3.1.4-2.4-1.6-3.5-1.2-3.5-1.2-.7 1.8-.2 3.2-.1 3.5-1 1-1.5 2.1-1.5 3.5 0 5 3 6.2 6 6.5-.4.4-.8 1.1-.9 2.2-.1.9-.1 2.3-.1 2.8 0 .5-.3 1.1-.9 1.4" />
+  </svg>
+);
 
 const projects = [
   {
@@ -165,6 +171,29 @@ export default function Projects() {
     };
   }, [isPaused, selectedProject, showAll]);
 
+  // Lock background scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedProject(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const scrollAmount = direction === 'left' ? -400 : 400;
@@ -268,9 +297,18 @@ export default function Projects() {
                   <div className="p-3 bg-white/5 rounded-xl border border-white/10 group-hover:scale-110 transition-transform">
                     {project.icon}
                   </div>
-                  <div className="flex space-x-3 text-slate-400">
+                  <div className="flex space-x-3">
                     {project.githubUrl && (
-                      <motion.a href={project.githubUrl} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.2, color: "#fff" }}><Code size={20} /></motion.a>
+                      <motion.a 
+                        href={project.githubUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        whileHover={{ scale: 1.15, color: "#fff", borderColor: "rgba(255,255,255,0.2)" }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white transition-colors"
+                      >
+                        <GithubIcon size={20} />
+                      </motion.a>
                     )}
                   </div>
                 </div>
@@ -327,17 +365,17 @@ export default function Projects() {
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
             onClick={() => setSelectedProject(null)}
           >
-            {/* Gradual blur and dark overlay backdrop */}
-            <motion.div
+            {/* Gradual shadow/blur overlay backdrop (darker towards the center, fades out at edges) */}
+            <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 pointer-events-none"
+              className="absolute inset-0 bg-black/85 pointer-events-none"
               style={{
-                backdropFilter: 'blur(32px)',
-                WebkitBackdropFilter: 'blur(32px)',
-                maskImage: 'radial-gradient(circle, transparent 15%, black 75%)',
-                WebkitMaskImage: 'radial-gradient(circle, transparent 15%, black 75%)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                maskImage: 'radial-gradient(circle, black 30%, rgba(0,0,0,0.3) 65%, transparent 85%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 30%, rgba(0,0,0,0.3) 65%, transparent 85%)',
               }}
             />
 
@@ -347,7 +385,7 @@ export default function Projects() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl max-w-2xl w-full bg-[#0d0e15]/50 text-left relative cursor-default "
+              className="glass p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl max-w-2xl w-full bg-[#0c0d12]/92 text-left relative cursor-default z-10"
             >
               {/* Close button in top-right */}
               <button
@@ -365,9 +403,18 @@ export default function Projects() {
                 <div className="p-3 bg-white/5 rounded-xl border border-white/10">
                   {selectedProject.icon}
                 </div>
-                <div className="flex space-x-3 text-slate-400 pr-6">
+                <div className="flex space-x-3 pr-6">
                   {selectedProject.githubUrl && (
-                    <motion.a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.2, color: "#fff" }}><Code size={20} /></motion.a>
+                    <motion.a 
+                      href={selectedProject.githubUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      whileHover={{ scale: 1.15, color: "#fff", borderColor: "rgba(255,255,255,0.2)" }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white transition-colors"
+                    >
+                      <GithubIcon size={20} />
+                    </motion.a>
                   )}
                 </div>
               </div>

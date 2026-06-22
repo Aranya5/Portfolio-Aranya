@@ -14,6 +14,7 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,13 +41,22 @@ export default function Navbar() {
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
+        <div className="hidden md:flex space-x-1 relative items-center">
+          {navLinks.map((link, idx) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-mono text-slate-300 hover:text-white transition-colors duration-200"
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="relative px-4 py-2 text-sm font-mono text-slate-300 hover:text-white transition-colors duration-200"
             >
+              {hoveredIndex === idx && (
+                <motion.span
+                  layoutId="nav-hover-pill"
+                  className="absolute inset-0 bg-white/5 rounded-full -z-10"
+                  transition={{ type: "spring", stiffness: 350, damping: 27 }}
+                />
+              )}
               {link.name}
             </a>
           ))}
