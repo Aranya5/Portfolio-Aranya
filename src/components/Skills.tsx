@@ -66,6 +66,7 @@ export default function Skills() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -80,6 +81,49 @@ export default function Skills() {
     window.addEventListener('resize', checkScroll);
     return () => window.removeEventListener('resize', checkScroll);
   }, []);
+
+  // Smooth continuous auto-scrolling loop
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationId: number;
+    let lastTime = performance.now();
+    const speed = 30; // pixels per second
+
+    let currentScrollLeft = scrollContainer.scrollLeft;
+
+    const step = (time: number) => {
+      const deltaTime = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (!isPaused) {
+        // Sync if the actual scroll position is different (e.g. from manual scrolling)
+        if (Math.abs(scrollContainer.scrollLeft - currentScrollLeft) > 1) {
+          currentScrollLeft = scrollContainer.scrollLeft;
+        }
+
+        currentScrollLeft += speed * deltaTime;
+        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+        if (currentScrollLeft >= maxScroll - 1) {
+          currentScrollLeft = 0;
+        }
+
+        scrollContainer.scrollLeft = currentScrollLeft;
+      } else {
+        currentScrollLeft = scrollContainer.scrollLeft;
+      }
+
+      animationId = requestAnimationFrame(step);
+    };
+
+    animationId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, [isPaused]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -103,26 +147,40 @@ export default function Skills() {
           <p className="text-slate-400 font-sans">Technologies and tools I leverage to engineer scalable systems.</p>
         </motion.div>
 
-        <div className="relative group/slider px-4 md:px-0">
-          {/* Left Navigation Arrow */}
-          <button 
-            onClick={() => scroll('left')}
-            className={`absolute left-0 lg:-left-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 md:opacity-0 md:group-hover/slider:opacity-100 ${canScrollLeft ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed opacity-0 md:opacity-0 pointer-events-none'}`}
-            disabled={!canScrollLeft}
-            aria-label="Scroll left"
+        <div className="relative px-4 md:px-0">
+          {/* Left Fade Zone & Sensor */}
+          <div 
+            className="absolute left-0 top-0 bottom-12 w-20 md:w-32 bg-white/0 z-30 pointer-events-auto flex items-center justify-start pl-2 md:pl-4 group/left-sensor"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
-            <ChevronLeft size={24} />
-          </button>
+            {/* Left Navigation Arrow */}
+            <button 
+              onClick={() => scroll('left')}
+              className={`w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 opacity-0 group-hover/left-sensor:opacity-100 ${canScrollLeft ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed pointer-events-none opacity-0'}`}
+              disabled={!canScrollLeft}
+              aria-label="Scroll left"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          </div>
 
-          {/* Right Navigation Arrow */}
-          <button 
-            onClick={() => scroll('right')}
-            className={`absolute right-0 lg:-right-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 pointer-events-auto md:opacity-0 md:group-hover/slider:opacity-100 ${canScrollRight ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed opacity-50 md:opacity-50 pointer-events-none'}`}
-            disabled={!canScrollRight}
-            aria-label="Scroll right"
+          {/* Right Fade Zone & Sensor */}
+          <div 
+            className="absolute right-0 top-0 bottom-12 w-20 md:w-32 bg-white/0 z-30 pointer-events-auto flex items-center justify-end pr-2 md:pr-4 group/right-sensor"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
-            <ChevronRight size={24} />
-          </button>
+            {/* Right Navigation Arrow */}
+            <button 
+              onClick={() => scroll('right')}
+              className={`w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 opacity-0 group-hover/right-sensor:opacity-100 ${canScrollRight ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed pointer-events-none opacity-0'}`}
+              disabled={!canScrollRight}
+              aria-label="Scroll right"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
 
           <motion.div 
             ref={scrollRef}
@@ -131,14 +189,18 @@ export default function Skills() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="flex overflow-x-auto items-stretch gap-6 pb-12 snap-x snap-mandatory pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-20"
+            className="flex overflow-x-auto items-stretch gap-6 pb-12 pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-20 mask-fade"
           >
           {skillCategories.map((category, idx) => (
             <motion.div 
               key={idx}
               variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="glass p-6 md:p-8 rounded-2xl border-t border-white/10 relative overflow-hidden group min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] aspect-square snap-center shrink-0 flex flex-col justify-center items-center h-full hover:shadow-2xl hover:shadow-cyan-500/10 transition-all cursor-grab active:cursor-grabbing"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onTouchStart={() => setIsPaused(true)}
+              onTouchEnd={() => setIsPaused(false)}
+              className="glass p-6 md:p-8 rounded-2xl border-t border-white/10 relative overflow-hidden group min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] aspect-square shrink-0 flex flex-col justify-center items-center h-full hover:shadow-2xl hover:shadow-cyan-500/10 transition-all cursor-grab active:cursor-grabbing"
             >
               {/* Subtle hover glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

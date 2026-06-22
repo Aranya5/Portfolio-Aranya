@@ -71,6 +71,7 @@ export default function Projects() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   const checkScroll = () => {
     if (scrollRef.current && !showAll) {
@@ -87,6 +88,51 @@ export default function Projects() {
       return () => window.removeEventListener('resize', checkScroll);
     }
   }, [showAll]);
+
+  // Smooth continuous auto-scrolling loop
+  useEffect(() => {
+    if (showAll) return;
+
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationId: number;
+    let lastTime = performance.now();
+    const speed = 30; // pixels per second
+
+    let currentScrollLeft = scrollContainer.scrollLeft;
+
+    const step = (time: number) => {
+      const deltaTime = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (!isPaused) {
+        // Sync if the actual scroll position is different (e.g. from manual scrolling)
+        if (Math.abs(scrollContainer.scrollLeft - currentScrollLeft) > 1) {
+          currentScrollLeft = scrollContainer.scrollLeft;
+        }
+
+        currentScrollLeft += speed * deltaTime;
+        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+        if (currentScrollLeft >= maxScroll - 1) {
+          currentScrollLeft = 0;
+        }
+
+        scrollContainer.scrollLeft = currentScrollLeft;
+      } else {
+        currentScrollLeft = scrollContainer.scrollLeft;
+      }
+
+      animationId = requestAnimationFrame(step);
+    };
+
+    animationId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, [isPaused, showAll]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -125,28 +171,42 @@ export default function Projects() {
           </button>
         </div>
 
-        <div className={`relative ${!showAll ? 'group/slider px-4 md:px-0' : ''}`}>
+        <div className={`relative ${!showAll ? 'px-4 md:px-0' : ''}`}>
           {!showAll && (
             <>
-              {/* Left Navigation Arrow */}
-              <button 
-                onClick={() => scroll('left')}
-                className={`absolute left-0 lg:-left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 md:opacity-0 md:group-hover/slider:opacity-100 ${canScrollLeft ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed opacity-0 md:opacity-0 pointer-events-none'}`}
-                disabled={!canScrollLeft}
-                aria-label="Scroll left"
+              {/* Left Fade Zone & Sensor */}
+              <div 
+                className="absolute left-0 top-0 bottom-12 w-20 md:w-32 bg-white/0 z-30 pointer-events-auto flex items-center justify-start pl-2 md:pl-4 group/left-sensor"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
               >
-                <ChevronLeft size={24} />
-              </button>
+                {/* Left Navigation Arrow */}
+                <button 
+                  onClick={() => scroll('left')}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 opacity-0 group-hover/left-sensor:opacity-100 ${canScrollLeft ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed pointer-events-none opacity-0'}`}
+                  disabled={!canScrollLeft}
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              </div>
 
-              {/* Right Navigation Arrow */}
-              <button 
-                onClick={() => scroll('right')}
-                className={`absolute right-0 lg:-right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 pointer-events-auto md:opacity-0 md:group-hover/slider:opacity-100 ${canScrollRight ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed opacity-50 md:opacity-50 pointer-events-none'}`}
-                disabled={!canScrollRight}
-                aria-label="Scroll right"
+              {/* Right Fade Zone & Sensor */}
+              <div 
+                className="absolute right-0 top-0 bottom-12 w-20 md:w-32 bg-white/0 z-30 pointer-events-auto flex items-center justify-end pr-2 md:pr-4 group/right-sensor"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
               >
-                <ChevronRight size={24} />
-              </button>
+                {/* Right Navigation Arrow */}
+                <button 
+                  onClick={() => scroll('right')}
+                  className={`w-12 h-12 flex items-center justify-center rounded-full glass shadow-xl transition-all duration-300 opacity-0 group-hover/right-sensor:opacity-100 ${canScrollRight ? 'text-cyan-400 hover:bg-white/10 hover:scale-110 cursor-pointer' : 'text-slate-600 cursor-not-allowed pointer-events-none opacity-0'}`}
+                  disabled={!canScrollRight}
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
             </>
           )}
 
@@ -155,11 +215,15 @@ export default function Projects() {
             onScroll={!showAll ? checkScroll : undefined}
             className={showAll 
               ? "grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch" 
-              : "flex items-stretch overflow-x-auto gap-6 md:gap-8 pb-12 snap-x snap-mandatory pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-20"}
+              : "flex items-stretch overflow-x-auto gap-6 md:gap-8 pb-12 pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-20 mask-fade"}
           >
             {projects.map((project, idx) => (
               <motion.div
                 key={idx}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -168,7 +232,7 @@ export default function Projects() {
                   y: -12, 
                   transition: { type: "spring", stiffness: 300, damping: 20 }
                 }}
-                className={`glass p-8 rounded-2xl flex flex-col h-full border border-white/5 hover:border-white/20 hover:shadow-2xl hover:shadow-indigo-500/20 group ${!showAll ? 'w-[85vw] md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[revert] snap-center shrink-0 flex-none' : ''}`}
+                className={`glass p-8 rounded-2xl flex flex-col h-full border border-white/5 hover:border-white/20 hover:shadow-2xl hover:shadow-indigo-500/20 group ${!showAll ? 'w-[85vw] md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[revert] shrink-0 flex-none' : ''}`}
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="p-3 bg-white/5 rounded-xl border border-white/10 group-hover:scale-110 transition-transform">
